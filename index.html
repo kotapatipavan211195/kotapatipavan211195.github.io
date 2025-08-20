@@ -68,7 +68,11 @@
     .links a.active { background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 25%, transparent), color-mix(in oklab, var(--accent-2) 25%, transparent)); border: 1px solid var(--border) }
     .toggle { background: var(--panel); border:1px solid var(--border); border-radius: 10px; padding: 8px 12px; cursor:pointer }
 
-    .hero { display:grid; grid-template-columns: 1.2fr .8fr; gap: 28px; padding: 42px 0 }
+    .hero { display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; grid-template-areas: "main about" "high cert"; gap: 16px; padding: 20px 0 }
+    .hero-main { grid-area: main }
+    .hero-about { grid-area: about }
+    .hero-high { grid-area: high }
+    .hero-cert { grid-area: cert }
     .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow) }
     h1 { font-size: 40px; line-height: 1.15; margin: 0 0 10px }
     .subtitle { color: var(--muted); margin: 0 0 18px }
@@ -114,8 +118,10 @@
     .edu-cert { display:grid; grid-template-columns: 1.2fr .8fr; gap: 16px }
     .edu-card, .cert-card, .pub-card { border:1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; background: var(--panel) }
 
-    .contact { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px }
-    .contact a { display:flex; align-items:center; gap: 10px; padding: 12px; background: var(--panel); border:1px solid var(--border); border-radius: var(--radius-sm) }
+    .contact { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px }
+    .contact a { display:flex; align-items:center; gap: 10px; padding: 12px; background: var(--panel); border:1px solid var(--border); border-radius: var(--radius-sm); text-decoration: none }
+    .contact a svg, .contact a img { width: 22px; height: 22px; flex-shrink: 0 }
+    .contact a .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 
     footer { margin: 30px 0 10px; color: var(--muted); text-align:center }
 
@@ -125,13 +131,18 @@
     .spacer { height: 1px; background: var(--border); margin: 24px 0 }
 
     @media (max-width: 980px) {
-      .hero { grid-template-columns: 1fr }
+      .hero { grid-template-columns: 1fr; grid-template-areas: "main" "about" "cert" "high"; gap: 12px }
       .skill-groups { grid-template-columns: 1fr }
       .projects { grid-template-columns: 1fr }
       .edu-cert { grid-template-columns: 1fr }
       .contact { grid-template-columns: 1fr }
       .grid, .span-6, .span-7, .span-5, .span-12 { grid-template-columns: 1fr; grid-column: span 12 }
     }
+    .skill-groups { grid-template-columns: 1fr }
+    .projects { grid-template-columns: 1fr }
+    .edu-cert { grid-template-columns: 1fr }
+    .contact { grid-template-columns: 1fr }
+    .grid, .span-6, .span-7, .span-5, .span-12 { grid-template-columns: 1fr; grid-column: span 12 }
 
     /* Print-friendly resume view */
     @media print {
@@ -140,6 +151,8 @@
       .card, .role, .edu-card, .cert-card { box-shadow: none; border: none; background: #fff; padding: 0 }
       a { color: #000; text-decoration: none }
     }
+      .col-left { grid-column: 1 }
+    .col-right { grid-column: 2 }
   </style>
 </head>
 <body id="top">
@@ -165,12 +178,13 @@
 
 <main id="content" class="wrap" role="main">
   <section class="hero">
-    <div class="card" aria-labelledby="page-title">
-      <h1 id="page-title">Data Engineer &amp; GenAI Builder</h1>
-      <p class="subtitle">7+ years designing scalable data platforms &amp; real-time pipelines across <strong>GCP</strong> and <strong>AWS</strong>. Experienced with <strong>Databricks</strong>, <strong>BigQuery</strong>, <strong>Airflow</strong>, and <strong>LLM-powered</strong> automation using <strong>Vertex AI Gemini</strong> &amp; <strong>OpenAI</strong>.</p>
+    <!-- Left: Title/CTA -->
+    <div class="card hero-main" aria-labelledby="page-title">
+      <h1 id="page-title">Data Engineer</h1>
+      <p class="subtitle">7+ years building scalable data platforms and real-time pipelines on <strong>GCP</strong> and <strong>AWS</strong>. Hands-on with <strong>Databricks</strong>, <strong>BigQuery</strong>, <strong>Airflow</strong>, and <strong>LLM-powered</strong> automation using <strong>Vertex AI</strong> &amp; <strong>OpenAI</strong>.</p>
       <div class="badges" aria-label="Core capabilities">
-        <span class="chip">GCP • BigQuery • Pub/Sub • Dataflow</span>
-        <span class="chip">AWS • Redshift • Lambda</span>
+        <span class="chip">GCP • BigQuery • Vertex AI • Pub/Sub • Dataflow</span>
+        <span class="chip">AWS • S3 • Redshift • Lambda • Athena</span>
         <span class="chip">PySpark • Python • SQL</span>
         <span class="chip">Airflow • CI/CD • Terraform</span>
         <span class="chip">Databricks • Snowflake • Hive</span>
@@ -179,30 +193,48 @@
       <div class="cta">
         <a class="btn primary" href="assets/Pavan_Kotapati_Resume.pdf" download id="downloadResume">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-          <span>Download Résumé</span>
+          <span>Download Resume</span>
         </a>
         <a class="btn" href="https://linkedin.com/in/KTVPavan" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a class="btn" href="https://github.com/kotapatipavan211195" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a class="btn" href="mailto:kotapati.tejavenkatpawan@gmail.com" id="copyEmail" data-copy="kotapati.tejavenkatpawan@gmail.com" aria-label="Copy email to clipboard">Email</a>
-        <a class="btn" href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3AKotapati%3BPavan%3B%3B%3B%0AFN%3APavan%20Kotapati%0AEMAIL%3BTYPE%3DINTERNET%3Akotapati.tejavenkatpawan%40gmail.com%0ATEL%3BTYPE%3DCELL%3A%2B1%20573-529-2077%0AADR%3BTYPE%3DWORK%3A%3B%3B%3BTampa%3BFL%3B33558%3BUSA%0AURL%3Ahttps%3A%2F%2Fkotapatipavan211195.github.io%2F%0AEND%3AVCARD" download="Pavan_Kotapati.vcf">Save vCard</a>
       </div>
     </div>
 
-    <div class="card">
+    <!-- Right: About -->
+    <div class="card hero-about">
       <h2 id="about">About</h2>
-      <p>Results-driven Data Engineer based in Tampa, FL. I build robust data platforms, automate ETL/ELT with modern orchestration, and apply GenAI to accelerate delivery and democratize analytics. I care about code quality, observability, costs, and measurable business impact.</p>
+      <p>Results-driven Data Engineer based in Tampa, FL. I design robust data platforms, automate ETL/ELT with modern orchestration, and apply GenAI to accelerate delivery and democratize analytics. I focus on code quality, observability, cost, and measurable business impact.</p>
       <ul>
-        <li>LLM-powered modernization automated <strong>~85%</strong> of legacy ETL refactoring and reduced timeline from ~1 year to <strong>~3 months</strong>, saving <strong>$250K+</strong>.</li>
-        <li>Natural language to SQL interface (Vertex AI) enabled self-serve analytics with <strong>~95%</strong> single-table accuracy and <strong>~$100K/yr</strong> savings.</li>
-        <li>Migrated workloads from SAS to GCP/Python with <strong>99.9%</strong> pipeline uptime and automated monitoring.</li>
-        <li>Automated <strong>7,000+ hours/yr</strong> of manual work, avoiding legacy license costs and saving <strong>$400K+</strong>.</li>
+        <li>LLM-powered modernization automated <strong>~85%</strong> of legacy ETL and cut delivery from ~12 months to <strong>~3 months</strong> (<strong>$250K+</strong> savings).</li>
+        <li>Natural language → SQL (Vertex AI) enabled self-serve analytics with <strong>~95%</strong> single-table accuracy and <strong>~$100K/yr</strong> savings.</li>
+        <li>Migrated SAS workloads to GCP/Python with <strong>99.9%</strong> pipeline uptime and automated monitoring.</li>
+        <li>Automated <strong>7,000+ hrs/yr</strong> of manual work and reduced compute/storage cost via optimization.</li>
       </ul>
-      <p class="muted">Open to Data Engineer, Analytics Engineer, and Platform/Data Infra roles.</p>
+    </div>
+
+    <!-- Bottom-left: Highlights -->
+    <div class="card hero-high" aria-labelledby="high-title">
+      <h2 id="high-title">Highlights</h2>
+      <ul>
+        <li>99.9% pipeline uptime with proactive monitoring and alerts.</li>
+        <li>Optimized BigQuery/Databricks jobs; ~80% faster runtimes.</li>
+        <li>Lineage discovery utility for job↔table impact analysis.</li>
+      </ul>
+    </div>
+
+    <!-- Bottom-right: Certifications -->
+    <div class="card hero-cert" aria-labelledby="certs-title">
+      <h2 id="certs-title">Certifications</h2>
+      <ul>
+        <li>Google Certified <strong>Professional Data Engineer</strong></li>
+        <li>Google Certified <strong>Associate Cloud Engineer</strong></li>
+      </ul>
     </div>
   </section>
 
   <section id="skills" class="grid" aria-labelledby="skills-title">
-    <div class="span-7 card">
+    <div class="span-12 card">
       <h2 id="skills-title">Skills</h2>
       <div class="skill-groups">
         <div class="skill-card">
@@ -229,8 +261,8 @@
             <span class="pill">Databricks</span>
             <span class="pill">Snowflake</span>
             <span class="pill">Hive</span>
-            <span class="pill">BigQuery ML</span>
             <span class="pill">SQL</span>
+            <span class="pill">Athena</span>
             <span class="pill">Python</span>
           </div>
         </div>
@@ -250,7 +282,6 @@
         <div class="skill-card">
           <h3>Databases &amp; Formats</h3>
           <div class="list">
-            <span class="pill">BigQuery</span>
             <span class="pill">Oracle</span>
             <span class="pill">MS SQL</span>
             <span class="pill">MySQL</span>
@@ -258,7 +289,9 @@
             <span class="pill">Parquet</span>
             <span class="pill">Avro</span>
             <span class="pill">ORC</span>
-            <span class="pill">JSON/XML/CSV</span>
+            <span class="pill">JSON</span>
+            <span class="pill">XML</span>
+            <span class="pill">CSV</span>
           </div>
         </div>
         <div class="skill-card">
@@ -276,31 +309,16 @@
           <h3>ML &amp; GenAI</h3>
           <div class="list">
             <span class="pill">Vertex AI Gemini</span>
+            <span class="pill">BigQuery ML</span>
             <span class="pill">OpenAI</span>
             <span class="pill">Scikit-learn</span>
             <span class="pill">TensorFlow/Keras</span>
             <span class="pill">PyTorch</span>
-            <span class="pill">KNIME/WEKA</span>
+            <span class="pill">KNIME</span>
+            <span class="pill">WEKA</span>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="span-5 card">
-      <h2>Certifications &amp; Quick Facts</h2>
-      <ul>
-        <li>Google Certified <strong>Professional Data Engineer</strong></li>
-        <li>Google Certified <strong>Associate Cloud Engineer</strong></li>
-      </ul>
-      <div class="spacer" role="presentation"></div>
-      <ul>
-        <li><span class="kbd">Location</span> Tampa, FL 33558</li>
-        <li><span class="kbd">Email</span> <a href="mailto:kotapati.tejavenkatpawan@gmail.com">kotapati.tejavenkatpawan@gmail.com</a></li>
-        <li><span class="kbd">Phone</span> <a href="tel:+15735292077">+1 (573) 529-2077</a></li>
-        <li><span class="kbd">LinkedIn</span> <a href="https://linkedin.com/in/KTVPavan" target="_blank" rel="noopener noreferrer">/in/KTVPavan</a></li>
-        <li><span class="kbd">GitHub</span> <a href="https://github.com/kotapatipavan211195" target="_blank" rel="noopener noreferrer">@kotapatipavan211195</a></li>
-        <li class="muted">Last updated: <time id="lastUpdated" datetime="2025-08-18">Aug 18, 2025</time></li>
-      </ul>
     </div>
   </section>
 
@@ -441,17 +459,17 @@
   <section id="contact" class="card" aria-labelledby="contact-title">
     <h2 id="contact-title">Contact</h2>
     <div class="contact">
-      <a href="mailto:kotapati.tejavenkatpawan@gmail.com" aria-label="Email">
-        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
-        <span>kotapati.tejavenkatpawan@gmail.com</span>
+      <a href="mailto:kotapati.tejavenkatpawan@gmail.com" title="Email Pavan" aria-label="Email Pavan">
+        <svg role="img" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+        <span class="label">kotapati.tejavenkatpawan@gmail.com</span>
       </a>
-      <a href="tel:+15735292077" aria-label="Phone">
-        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92V21a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h4.09a2 2 0 0 1 2 1.72l.45 2.61a2 2 0 0 1-.57 1.86l-1.27 1.27a16 16 0 0 0 6.88 6.88l1.27-1.27a2 2 0 0 1 1.86-.57l2.61.45A2 2 0 0 1 22 16.92z"/></svg>
-        <span>+1 (573) 529-2077</span>
+      <a href="https://www.linkedin.com/in/KTVPavan" target="_blank" rel="noopener noreferrer" title="Open LinkedIn profile" aria-label="LinkedIn profile">
+        <svg role="img" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M22.225 0H1.771C.79 0 0 .774 0 1.729v20.542C0 23.225.79 24 1.771 24h20.454C23.2 24 24 23.225 24 22.271V1.729C24 .774 23.2 0 22.225 0zM6.957 20.452H3.717V9h3.24v11.452zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM20.447 20.452h-3.554v-5.569c0-1.328-.027-3.039-1.852-3.039-1.853 0-2.136 1.446-2.136 2.941v5.667H9.351V9h3.414v1.561h.048c.476-.9 1.637-1.852 3.369-1.852 3.599 0 4.266 2.369 4.266 5.455v6.288z"/></svg>
+        <span class="label">linkedin.com/in/KTVPavan</span>
       </a>
-      <a href="https://linkedin.com/in/KTVPavan" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.85 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8.98h5V24H0zM8.98 8.98H14v2.05h.07c.7-1.33 2.42-2.73 4.98-2.73 5.33 0 6.32 3.5 6.32 8.05V24h-5v-6.98c0-1.67-.03-3.83-2.33-3.83-2.33 0-2.69 1.82-2.69 3.7V24h-5z"/></svg>
-        <span>/in/KTVPavan</span>
+      <a href="https://github.com/kotapatipavan211195" target="_blank" rel="noopener noreferrer" title="Open GitHub profile" aria-label="GitHub profile">
+        <svg role="img" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.87 3.16 9 7.55 10.45.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.07.67-3.72-1.3-3.72-1.3-.5-1.26-1.22-1.6-1.22-1.6-.99-.67.08-.66.08-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.54 1.18 3.16.9.1-.7.38-1.18.69-1.45-2.45-.28-5.02-1.22-5.02-5.44 0-1.2.43-2.17 1.13-2.94-.11-.28-.49-1.42.11-2.96 0 0 .92-.3 3.02 1.12a10.5 10.5 0 0 1 5.5 0c2.1-1.42 3.02-1.12 3.02-1.12.6 1.54.22 2.68.11 2.96.7.77 1.13 1.74 1.13 2.94 0 4.23-2.58 5.15-5.03 5.43.39.34.73 1 .73 2.02 0 1.46-.01 2.63-.01 2.99 0 .29.19.64.76.53 4.38-1.46 7.54-5.58 7.54-10.45C23.1 5.33 18.27.5 12 .5z"/></svg>
+        <span class="label">github.com/kotapatipavan211195</span>
       </a>
     </div>
   </section>
@@ -559,8 +577,7 @@
   "name": "Pavan Kotapati",
   "jobTitle": "Data Engineer",
   "email": "mailto:kotapati.tejavenkatpawan@gmail.com",
-  "telephone": "+15735292077",
-  "address": {
+    "address": {
     "@type": "PostalAddress",
     "addressLocality": "Tampa",
     "addressRegion": "FL",
