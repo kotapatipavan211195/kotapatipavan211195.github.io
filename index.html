@@ -33,6 +33,13 @@
       --border: #222a33;
       --chip: #1a212b;
       --link: #8ad1ff;
+  --tab-about: color-mix(in oklab, var(--accent) 26%, transparent);
+  --tab-skills: color-mix(in oklab, #a855f7 26%, transparent);
+  --tab-experience: color-mix(in oklab, #f97316 24%, transparent);
+  --tab-projects: color-mix(in oklab, #ec4899 24%, transparent);
+  --tab-education: color-mix(in oklab, #22c55e 24%, transparent);
+  --tab-publications: color-mix(in oklab, #facc15 28%, transparent);
+  --tab-contact: color-mix(in oklab, #38bdf8 24%, transparent);
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 14px;
       --radius-sm: 10px;
@@ -49,6 +56,13 @@
         --border: #e5e7eb;
         --chip: #f3f4f6;
         --link: #004b99;
+        --tab-about: color-mix(in oklab, var(--accent) 18%, #ffffff 82%);
+        --tab-skills: color-mix(in oklab, #7c3aed 18%, #ffffff 82%);
+        --tab-experience: color-mix(in oklab, #f97316 18%, #ffffff 82%);
+        --tab-projects: color-mix(in oklab, #f472b6 18%, #ffffff 82%);
+        --tab-education: color-mix(in oklab, #10b981 18%, #ffffff 82%);
+        --tab-publications: color-mix(in oklab, #facc15 22%, #ffffff 78%);
+        --tab-contact: color-mix(in oklab, #38bdf8 18%, #ffffff 82%);
       }
     }
     * { box-sizing: border-box }
@@ -60,32 +74,48 @@
     .wrap { max-width: var(--maxw); margin: 0 auto; padding: 24px }
     header.site-header { position: sticky; top: 0; z-index: 50; background: color-mix(in oklab, var(--bg) 85%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border) }
     .nav { display:flex; align-items:center; justify-content:space-between; gap:18px }
-    .brand { display:flex; align-items:center; gap:12px }
+  .brand { display:flex; align-items:center; gap:12px; color: var(--text); text-decoration:none; font-weight:700; transition: color .18s ease }
+  .brand:hover .name, .brand:focus-visible .name { color: var(--accent-2) }
     .brand .logo { width:36px; height:36px; border-radius:50%; display:grid; place-items:center; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#001018; font-weight:800 }
     .brand .name { font-weight:700; letter-spacing:.3px }
-    .links a { padding:10px 12px; border-radius:10px }
-    .links a:hover { background: var(--chip) }
-    .links a.active { background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 25%, transparent), color-mix(in oklab, var(--accent-2) 25%, transparent)); border: 1px solid var(--border) }
+  .links a { position:relative; display:inline-flex; align-items:center; gap:6px; padding:10px 14px; border-radius:12px; color: var(--muted); font-weight:500; transition: color .18s ease, transform .18s ease; isolation:isolate }
+  .links a::before { content:""; position:absolute; inset:0; border-radius:inherit; background: var(--tab-color, transparent); opacity:0; transition: opacity .2s ease; z-index:-1 }
+  .links a::after { content:""; position:absolute; left:18px; right:18px; bottom:6px; height:3px; border-radius:999px; background: var(--tab-underline, transparent); transform:scaleX(0); transform-origin:center; transition: transform .2s ease; z-index:-1 }
+  .links a:hover, .links a:focus-visible { color: var(--text); text-decoration:none; transform: translateY(-1px) }
+  .links a:hover::before, .links a:focus-visible::before { opacity:1 }
+  .links a:hover::after, .links a:focus-visible::after { transform:scaleX(1) }
+  .links a.active { color: var(--text); font-weight:600 }
+  .links a.active::before { opacity:1 }
+  .links a.active::after { transform:scaleX(1) }
+  .links a:nth-child(1) { --tab-color: var(--tab-about); --tab-underline: color-mix(in oklab, var(--accent) 65%, #ffffff 35%) }
+  .links a:nth-child(2) { --tab-color: var(--tab-skills); --tab-underline: color-mix(in oklab, #a855f7 65%, #ffffff 35%) }
+  .links a:nth-child(3) { --tab-color: var(--tab-experience); --tab-underline: color-mix(in oklab, #f97316 65%, #ffffff 35%) }
+  .links a:nth-child(4) { --tab-color: var(--tab-projects); --tab-underline: color-mix(in oklab, #ec4899 65%, #ffffff 35%) }
+  .links a:nth-child(5) { --tab-color: var(--tab-education); --tab-underline: color-mix(in oklab, #22c55e 65%, #ffffff 35%) }
+  .links a:nth-child(6) { --tab-color: var(--tab-publications); --tab-underline: color-mix(in oklab, #facc15 65%, #ffffff 35%) }
+  .links a:nth-child(7) { --tab-color: var(--tab-contact); --tab-underline: color-mix(in oklab, #38bdf8 65%, #ffffff 35%) }
     .toggle { background: var(--panel); border:1px solid var(--border); border-radius: 10px; padding: 8px 12px; cursor:pointer }
 
-    .hero { display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; grid-template-areas: "main about" "high cert"; gap: 16px; padding: 20px 0 }
+    .hero { display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; grid-template-areas: "main main" "about about" "high cert"; gap: 16px; padding: 20px 0 }
     .hero-main { grid-area: main }
     .hero-about { grid-area: about }
     .hero-high { grid-area: high }
     .hero-cert { grid-area: cert }
-    .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow) }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); transition: transform .15s ease }
+    .card:hover { transform: translateY(-2px) }
     h1 { font-size: 40px; line-height: 1.15; margin: 0 0 10px }
     .subtitle { color: var(--muted); margin: 0 0 18px }
     .badges { display:flex; flex-wrap:wrap; gap:10px; margin: 20px 0 24px }
     .chip { background: var(--chip); color: var(--text); border:1px solid var(--border); padding:6px 10px; border-radius: 999px; font-size: 13px }
-  .cta { display:flex; flex-direction:column; gap:12px; margin-top: 8px }
-  .cta-row { display:flex; gap:12px; flex-wrap:nowrap }
-  .cta-row.socials { justify-content:flex-start }
-    .btn { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius: 12px; border:1px solid var(--border); background: var(--panel) }
+    .cta { display:flex; flex-direction:row; gap:12px; margin-top: 8px; flex-wrap: wrap }
+    .cta-row { display:flex; gap:12px; flex-wrap:nowrap }
+    .cta-row.socials { justify-content:flex-start }
+    .btn { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius: 12px; border:1px solid var(--border); background: var(--panel); transition: transform .15s ease }
+    .btn:hover { transform: translateY(-2px) }
     .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#001018; font-weight: 700; border: none }
     .btn svg { width:18px; height:18px }
 
-    section { margin: 26px 0 30px }
+    section { margin: 16px 0 30px }
     section h2 { margin: 0 0 14px; font-size: 22px }
     .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap: 18px }
     .span-6 { grid-column: span 6 }
@@ -94,7 +124,8 @@
     .span-12 { grid-column: span 12 }
 
     .timeline { display:flex; flex-direction:column; gap:16px }
-    .role { padding: 18px; border:1px solid var(--border); border-radius: var(--radius-sm); background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 96%, transparent), var(--panel)) }
+    .role { padding: 18px; border:1px solid var(--border); border-radius: var(--radius-sm); background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 96%, transparent), var(--panel)); transition: transform .15s ease }
+    .role:hover { transform: translateY(-2px) }
     .role header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px }
     .role h3 { margin:0; font-size:18px }
     .role .meta { color: var(--muted); font-size: 14px }
@@ -118,16 +149,18 @@
     .project .desc { margin: 8px 0 0 }
 
     .edu-cert { display:grid; grid-template-columns: 1.2fr .8fr; gap: 16px }
-    .edu-card, .cert-card, .pub-card { border:1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; background: var(--panel) }
-  .edu-list { list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:14px }
-  .edu-list li { display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap }
-  .edu-list .meta-left { flex:1 1 300px; min-width:260px }
-  .edu-list .degree { font-weight:600 }
-  .edu-list .school { color: var(--muted); font-size:14px }
-  .edu-list .grad { white-space:nowrap; font-weight:600; color: var(--muted) }
+    .edu-card, .cert-card, .pub-card { border:1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; background: var(--panel); box-shadow: var(--shadow); transition: transform .15s ease }
+    .edu-card:hover, .cert-card:hover, .pub-card:hover { transform: translateY(-2px) }
+    .edu-list { list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:14px }
+    .edu-list li { display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap }
+    .edu-list .meta-left { flex:1 1 300px; min-width:260px }
+    .edu-list .degree { font-weight:600 }
+    .edu-list .school { color: var(--muted); font-size:14px }
+    .edu-list .grad { white-space:nowrap; font-weight:600; color: var(--muted) }
 
     .contact { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px }
-    .contact a { display:flex; align-items:center; gap: 10px; padding: 12px; background: var(--panel); border:1px solid var(--border); border-radius: var(--radius-sm); text-decoration: none }
+    .contact a { display:flex; align-items:center; gap: 10px; padding: 12px; background: var(--panel); border:1px solid var(--border); border-radius: var(--radius-sm); text-decoration: none; transition: transform .15s ease }
+    .contact a:hover { transform: translateY(-2px) }
     .contact a svg, .contact a img { width: 22px; height: 22px; flex-shrink: 0 }
     .contact a .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 
@@ -139,18 +172,13 @@
     .spacer { height: 1px; background: var(--border); margin: 24px 0 }
 
     @media (max-width: 980px) {
-      .hero { grid-template-columns: 1fr; grid-template-areas: "main" "about" "cert" "high"; gap: 12px }
+      .hero { grid-template-columns: 1fr; grid-template-areas: "main" "about" "high" "cert"; gap: 12px }
       .skill-groups { grid-template-columns: 1fr }
       .projects { grid-template-columns: 1fr }
       .edu-cert { grid-template-columns: 1fr }
       .contact { grid-template-columns: 1fr }
       .grid, .span-6, .span-7, .span-5, .span-12 { grid-template-columns: 1fr; grid-column: span 12 }
     }
-    .skill-groups { grid-template-columns: 1fr }
-    .projects { grid-template-columns: 1fr }
-    .edu-cert { grid-template-columns: 1fr }
-    .contact { grid-template-columns: 1fr }
-    .grid, .span-6, .span-7, .span-5, .span-12 { grid-template-columns: 1fr; grid-column: span 12 }
 
     /* Print-friendly resume view */
     @media print {
@@ -159,7 +187,8 @@
       .card, .role, .edu-card, .cert-card { box-shadow: none; border: none; background: #fff; padding: 0 }
       a { color: #000; text-decoration: none }
     }
-      .col-left { grid-column: 1 }
+    
+    .col-left { grid-column: 1 }
     .col-right { grid-column: 2 }
   </style>
 </head>
@@ -167,10 +196,10 @@
 <a class="sr-only" href="#content">Skip to content</a>
 <header class="site-header" role="banner">
   <div class="wrap nav">
-    <div class="brand">
+    <a class="brand" href="#hero" aria-label="Scroll to hero">
       <div class="logo" aria-hidden="true">PK</div>
       <div class="name">Pavan Kotapati</div>
-    </div>
+    </a>
     <nav class="links" aria-label="Primary navigation">
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
@@ -185,11 +214,11 @@
 </header>
 
 <main id="content" class="wrap" role="main">
-  <section class="hero">
+  <section class="hero" id="hero">
     <!-- Left: Title/CTA -->
     <div class="card hero-main" aria-labelledby="page-title">
-      <h1 id="page-title">Data Engineer</h1>
-      <p class="subtitle">7+ years building scalable data platforms and real-time pipelines on <strong>GCP</strong> and <strong>AWS</strong>. Hands-on with <strong>Databricks</strong>, <strong>BigQuery</strong>, <strong>Airflow</strong>, and <strong>LLM-powered</strong> automation using <strong>Vertex AI</strong> &amp; <strong>OpenAI</strong>.</p>
+      <h1 id="page-title">AI Data Engineer</h1>
+      <p class="subtitle">Results-driven Data Engineer with 7+ years of experience in building scalable data pipelines, cloud architectures (GCP, AWS), and real-time processing solutions. Proficient in orchestration (Airflow), advanced analytics, and CI/CD automation. Experienced in applying GenAI (Vertex AI Gemini, OpenAI) for ETL modernization and SQL generation to enhance data accessibility, accuracy, and business impact.</p>
       <div class="badges" aria-label="Core capabilities">
         <span class="chip">GCP • BigQuery • Vertex AI • Pub/Sub • Dataflow</span>
         <span class="chip">AWS • S3 • Redshift • Lambda • Athena</span>
@@ -199,38 +228,34 @@
         <span class="chip">Docker • Kubernetes</span>
       </div>
       <div class="cta" aria-label="Primary actions">
-        <div class="cta-row socials" aria-label="Social links">
-          <a class="btn" href="https://linkedin.com/in/KTVPavan" target="_blank" rel="noopener noreferrer">
-            <svg aria-hidden="true" role="img" viewBox="0 0 24 24" fill="currentColor"><path d="M22.225 0H1.771C.79 0 0 .774 0 1.729v20.542C0 23.225.79 24 1.771 24h20.454C23.2 24 24 23.225 24 22.271V1.729C24 .774 23.2 0 22.225 0zM6.957 20.452H3.717V9h3.24v11.452zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM20.447 20.452h-3.554v-5.569c0-1.328-.027-3.039-1.852-3.039-1.853 0-2.136 1.446-2.136 2.941v5.667H9.351V9h3.414v1.561h.048c.476-.9 1.637-1.852 3.369-1.852 3.599 0 4.266 2.369 4.266 5.455v6.288z"/></svg>
-            <span>LinkedIn</span>
-          </a>
-          <a class="btn" href="https://github.com/kotapatipavan211195" target="_blank" rel="noopener noreferrer">
-            <svg aria-hidden="true" role="img" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.87 3.16 9 7.55 10.45.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.07.67-3.72-1.3-3.72-1.3-.5-1.26-1.22-1.6-1.22-1.6-.99-.67.08-.66.08-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.54 1.18 3.16.9.1-.7.38-1.18.69-1.45-2.45-.28-5.02-1.22-5.02-5.44 0-1.2.43-2.17 1.13-2.94-.11-.28-.49-1.42.11-2.96 0 0 .92-.3 3.02 1.12a10.5 10.5 0 0 1 5.5 0c2.1-1.42 3.02-1.12 3.02-1.12.6 1.54.22 2.68.11 2.96.7.77 1.13 1.74 1.13 2.94 0 4.23-2.58 5.15-5.03 5.43.39.34.73 1 .73 2.02 0 1.46-.01 2.63-.01 2.99 0 .29.19.64.76.53 4.38-1.46 7.54-5.58 7.54-10.45C23.1 5.33 18.27.5 12 .5z"/></svg>
-            <span>GitHub</span>
-          </a>
-          <a class="btn" href="mailto:kotapati.tejavenkatpawan@gmail.com" id="copyEmail" data-copy="kotapati.tejavenkatpawan@gmail.com" aria-label="Copy email to clipboard">
-            <svg aria-hidden="true" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
-            <span>Email</span>
-          </a>
-        </div>
-        <div class="cta-row">
-          <a class="btn primary" href="assets/Pavan_Kotapati_Resume.pdf" download id="downloadResume">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-            <span>Download Resume</span>
-          </a>
-        </div>
+        <a class="btn" href="https://linkedin.com/in/KTVPavan" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true" role="img" viewBox="0 0 24 24" fill="currentColor"><path d="M22.225 0H1.771C.79 0 0 .774 0 1.729v20.542C0 23.225.79 24 1.771 24h20.454C23.2 24 24 23.225 24 22.271V1.729C24 .774 23.2 0 22.225 0zM6.957 20.452H3.717V9h3.24v11.452zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM20.447 20.452h-3.554v-5.569c0-1.328-.027-3.039-1.852-3.039-1.853 0-2.136 1.446-2.136 2.941v5.667H9.351V9h3.414v1.561h.048c.476-.9 1.637-1.852 3.369-1.852 3.599 0 4.266 2.369 4.266 5.455v6.288z"/></svg>
+          <span>LinkedIn</span>
+        </a>
+        <a class="btn" href="https://github.com/kotapatipavan211195" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true" role="img" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.87 3.16 9 7.55 10.45.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.07.67-3.72-1.3-3.72-1.3-.5-1.26-1.22-1.6-1.22-1.6-.99-.67.08-.66.08-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.54 1.18 3.16.9.1-.7.38-1.18.69-1.45-2.45-.28-5.02-1.22-5.02-5.44 0-1.2.43-2.17 1.13-2.94-.11-.28-.49-1.42.11-2.96 0 0 .92-.3 3.02 1.12a10.5 10.5 0 0 1 5.5 0c2.1-1.42 3.02-1.12 3.02-1.12.6 1.54.22 2.68.11 2.96.7.77 1.13 1.74 1.13 2.94 0 4.23-2.58 5.15-5.03 5.43.39.34.73 1 .73 2.02 0 1.46-.01 2.63-.01 2.99 0 .29.19.64.76.53 4.38-1.46 7.54-5.58 7.54-10.45C23.1 5.33 18.27.5 12 .5z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <a class="btn" href="mailto:kotapati.tejavenkatpawan@gmail.com" id="copyEmail" data-copy="kotapati.tejavenkatpawan@gmail.com" aria-label="Copy email to clipboard">
+          <svg aria-hidden="true" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+          <span>Email</span>
+        </a>
+        <a class="btn primary" href="assets/Pavan_Kotapati_Resume.pdf" download id="downloadResume">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          <span>Download Resume</span>
+        </a>
       </div>
     </div>
 
     <!-- Right: About -->
     <div class="card hero-about">
       <h2 id="about">About</h2>
-      <p>Results-driven Data Engineer based in Tampa, FL. I design robust data platforms, automate ETL/ELT with modern orchestration, and apply GenAI to accelerate delivery and democratize analytics. I focus on code quality, observability, cost, and measurable business impact.</p>
+      <p>I'm a passionate data engineer based in Tampa, FL, actively transitioning my career toward the exciting world of <strong>Artificial Intelligence</strong>. With 7+ years of building robust data foundations, I'm now eager to leverage my deep understanding of data architecture to create intelligent systems that truly transform how businesses operate and make decisions.</p>
       <ul>
-        <li>LLM-powered modernization automated <strong>~85%</strong> of legacy ETL and cut delivery from ~12 months to <strong>~3 months</strong> (<strong>$250K+</strong> savings).</li>
-        <li>Natural language → SQL (Vertex AI) enabled self-serve analytics with <strong>~95%</strong> single-table accuracy and <strong>~$100K/yr</strong> savings.</li>
-        <li>Migrated SAS workloads to GCP/Python with <strong>99.9%</strong> pipeline uptime and automated monitoring.</li>
-        <li>Automated <strong>7,000+ hrs/yr</strong> of manual work and reduced compute/storage cost via optimization.</li>
+        <li><strong>AI-First Vision:</strong> I believe the future belongs to organizations that seamlessly integrate AI into their core operations. My goal is to become a bridge between complex AI technologies and practical business applications.</li>
+        <li><strong>Learning Journey:</strong> Currently expanding my expertise in machine learning frameworks, LLM implementation, and AI model deployment while building on my strong foundation in cloud platforms (GCP, AWS) and data engineering.</li>
+        <li><strong>Impact-Driven Approach:</strong> I'm particularly interested in developing AI solutions that democratize data insights, automate complex workflows, and enable non-technical users to harness the power of artificial intelligence.</li>
+        <li><strong>Future Goals:</strong> Aspiring to work with innovative teams that are pushing the boundaries of what's possible with AI, whether in startups developing cutting-edge AI products or established companies undergoing AI transformation.</li>
       </ul>
     </div>
 
@@ -248,8 +273,8 @@
     <div class="card hero-cert" aria-labelledby="certs-title">
       <h2 id="certs-title">Certifications</h2>
       <ul>
-        <li>Google Certified <strong>Professional Data Engineer</strong></li>
-        <li>Google Certified <strong>Associate Cloud Engineer</strong></li>
+        <li><a href="https://google.accredible.com/07c49fa3-ea42-4a4c-b436-b4520dcaacd9#acc.vfC9H6Oe" target="_blank" rel="noopener noreferrer">Google Certified <strong>Professional Data Engineer</strong></a></li>
+        <li><a href="https://www.credly.com/badges/e5f3c612-efed-495c-8bba-2b9a476cb41f/linked_in_profile" target="_blank" rel="noopener noreferrer">Google Certified <strong>Associate Cloud Engineer</strong></a></li>
       </ul>
     </div>
   </section>
@@ -356,22 +381,22 @@
     <div class="timeline">
       <article class="role" data-tags="llm ingestion orchestration cost realtime">
         <header>
-          <h3>Data Engineer II — Auto Club Group</h3>
+          <h3>Data Engineer II — AAA The Auto Club Group</h3>
           <div class="meta">Tampa, FL • Oct 2021 – Present</div>
         </header>
         <ul>
-          <li><strong>LLM-Powered ETL modernization:</strong> Used Vertex AI Gemini Pro 2.5 to convert legacy Python ETL into modular, parameterized code with YAML configs; automated ~85% of transformations, shrinking timeline from ~1 year to ~3 months and saving $250K+.</li>
-          <li><strong>NL→SQL analytics enablement:</strong> Built a Vertex-AI powered interface that interprets data dictionaries and generates BigQuery SQL; ~95% single-table accuracy and ~$100K/yr support cost savings.</li>
-          <li><strong>Data migration &amp; ingestion frameworks:</strong> Led migration from SAS to GCP/Python with monitoring for 99.9% pipeline uptime; designed YAML-driven ingestion with schema enforcement, DQ checks, alerting, and robust logging.</li>
-          <li><strong>Automation &amp; orchestration:</strong> Implemented event-driven, real-time pipelines with Cloud Run/Functions; created lineage discovery tool to map job↔table dependencies; established CI/CD and best practices for performance and cost.</li>
-          <li><strong>Impact:</strong> Automated 7,000+ hours/yr of manual processing, reduced storage/compute costs, and cut processing time by ~80% via optimized BigQuery &amp; transient Dataproc clusters.</li>
+          <li><strong>Lead data platform modernization:</strong> Architected migration from legacy SAS systems to GCP-native solutions, ensuring 99.9% pipeline uptime and enterprise-grade reliability.</li>
+          <li><strong>Implement LLM-powered automation:</strong> Leveraged Vertex AI and GenAI to accelerate ETL development, code generation, and analytics enablement across the organization.</li>
+          <li><strong>Design scalable data architecture:</strong> Built event-driven, real-time processing frameworks using Cloud Run, Pub/Sub, and Dataflow for high-throughput data ingestion.</li>
+          <li><strong>Drive cost optimization initiatives:</strong> Reduced compute/storage expenses through BigQuery optimization, transient cluster management, and automated resource scaling.</li>
+          <li><strong>Establish engineering best practices:</strong> Implemented CI/CD pipelines, infrastructure as code with Terraform, and comprehensive monitoring/alerting systems.</li>
         </ul>
         <div class="meta">Tech: GCP (BigQuery, Pub/Sub, Dataflow, Composer, Vertex AI), Python, PySpark, Databricks, Docker, Terraform, Git</div>
       </article>
 
       <article class="role" data-tags="analytics orchestration">
         <header>
-          <h3>Business Analyst — PrudentRx LLC</h3>
+          <h3>Business Analyst — PrudentRx, LLC</h3>
           <div class="meta">Tampa, FL • Jul 2020 – Oct 2021</div>
         </header>
         <ul>
@@ -383,7 +408,7 @@
 
       <article class="role" data-tags="ml ingestion">
         <header>
-          <h3>Research Assistant — University of Missouri</h3>
+          <h3>Graduate Research Assistant — University of Missouri Columbia</h3>
           <div class="meta">Columbia, MO • Aug 2018 – Jul 2020</div>
         </header>
         <ul>
@@ -396,59 +421,62 @@
   </section>
 
   <section id="projects" class="card" aria-labelledby="proj-title">
-    <h2 id="proj-title">Highlighted Projects</h2>
+    <h2 id="proj-title">Technical Deep Dives</h2>
     <div class="projects">
       <div class="project" data-tags="llm ingestion">
         <h3>LLM-Powered ETL Modernization</h3>
         <div class="stats">
-          <span class="pill">85% automation</span>
-          <span class="pill">~3 months vs 12</span>
-          <span class="pill">$250K+ savings</span>
+          <span class="pill">Vertex AI Gemini Pro 2.5</span>
+          <span class="pill">YAML-driven configs</span>
+          <span class="pill">$250K+ ROI</span>
         </div>
-        <p class="desc">Converted legacy ETL to modular Python with YAML configs using Vertex AI Gemini; enforced schemas, added logging, and standardized parameters to improve maintainability.</p>
+        <p class="desc">Built automated code generation pipeline using Vertex AI to convert legacy Python ETL into modular, parameterized components. Implemented prompt engineering techniques and validation frameworks to achieve 85% automation rate, reducing delivery cycles from 12+ months to 3 months.</p>
       </div>
       <div class="project" data-tags="llm analytics">
-        <h3>Natural Language → SQL for BigQuery</h3>
+        <h3>Natural Language SQL Generation</h3>
         <div class="stats">
-          <span class="pill">95% single-table accuracy</span>
-          <span class="pill">$100K/yr savings</span>
+          <span class="pill">Context-aware prompting</span>
+          <span class="pill">95% accuracy</span>
+          <span class="pill">BigQuery integration</span>
         </div>
-        <p class="desc">Built LLM interface to interpret table dictionaries and generate/execute SQL directly in BigQuery, enabling non-technical teams to self-serve analytics.</p>
+        <p class="desc">Developed intelligent SQL generation system using Vertex AI to interpret data dictionaries and business requirements. Features include query optimization, result validation, and natural language explanations of generated queries for business users.</p>
       </div>
       <div class="project" data-tags="ingestion orchestration">
-        <h3>YAML-Driven Ingestion Framework</h3>
+        <h3>Config-Driven Data Ingestion Platform</h3>
         <div class="stats">
-          <span class="pill">Schema enforcement</span>
-          <span class="pill">DQ &amp; alerting</span>
-          <span class="pill">Observability</span>
+          <span class="pill">Schema evolution</span>
+          <span class="pill">Data quality gates</span>
+          <span class="pill">Multi-source support</span>
         </div>
-        <p class="desc">Config-based ingestion with tracking, validation, and logging; easily extended across sources and environments.</p>
+        <p class="desc">Architected declarative ingestion framework using YAML configurations for source definitions, transformations, and quality checks. Supports incremental loading, CDC patterns, and automatic schema drift detection across 50+ data sources.</p>
       </div>
       <div class="project" data-tags="realtime orchestration">
-        <h3>Realtime Event-Driven Pipelines</h3>
+        <h3>Event-Driven Streaming Architecture</h3>
         <div class="stats">
-          <span class="pill">Cloud Run/Functions</span>
-          <span class="pill">Pub/Sub</span>
-          <span class="pill">Dataflow</span>
+          <span class="pill">Serverless design</span>
+          <!-- <span class="pill">Sub-second latency</span> -->
+          <span class="pill">Auto-scaling</span>
         </div>
-        <p class="desc">Serverless, event-driven designs to process streaming data with low latency and scalable throughput.</p>
+        <p class="desc">Designed cloud-native streaming platform using Cloud Run, Pub/Sub, and Dataflow for real-time data processing. Implements backpressure handling, dead letter queues, and exactly-once delivery semantics for mission-critical workflows.</p>
       </div>
       <div class="project" data-tags="platform analytics">
-        <h3>Lineage Discovery (Job↔Table Matrix)</h3>
+        <h3>Data Lineage & Impact Analysis</h3>
         <div class="stats">
-          <span class="pill">Impact analysis</span>
-          <span class="pill">Dependency map</span>
+          <span class="pill">Dependency mapping</span>
+          <span class="pill">AST parsing</span>
+          <!-- <span class="pill">Graph algorithms</span> -->
         </div>
-        <p class="desc">Python utility to scan ETL scripts in GCS, building an upstream/downstream dependency graph for change management and incident response.</p>
+        <p class="desc">Built intelligent lineage discovery system that parses ETL code, SQL queries, and configuration files to automatically map data dependencies. Uses graph traversal algorithms to identify upstream/downstream impacts for change management.</p>
       </div>
       <div class="project" data-tags="ml cost">
-        <h3>Efficient ML Workflows</h3>
+        <h3>Cost-Optimized ML Pipeline</h3>
         <div class="stats">
           <span class="pill">BigQuery ML</span>
-          <span class="pill">Transient Dataproc</span>
-          <span class="pill">~80% faster</span>
+          <span class="pill">PySpark</span>
+          <span class="pill">Transient Dataproc clusters</span>
+          <span class="pill">80% cost reduction</span>
         </div>
-        <p class="desc">Modeled and operationalized predictive pipelines while lowering compute/storage costs via query optimization and lifecycle policies.</p>
+        <p class="desc">Implemented ML model training and inference pipeline with automatic resource provisioning. Features include hyperparameter tuning, model versioning, A/B testing framework, and cost monitoring with automatic cluster lifecycle management.</p>
       </div>
     </div>
   </section>
@@ -462,7 +490,7 @@
             <h3>Master's in Health Informatics</h3>
             <div class="meta">Columbia, MO • Jul 2020</div>
           </header>
-          <div class="meta">University of Missouri</div>
+          <div class="meta">University of Missouri Columbia</div>
         </article>
         <article class="role" data-tags="education bachelors">
           <header>
@@ -474,7 +502,7 @@
       </div>
     </div>
     <div class="cert-card">
-      <h2>Awards &amp; Impact</h2>
+      <h2>Achievements</h2>
       <ul>
         <li>Automated 7,000+ hours/year of manual processing via ETL pipelines.</li>
         <li>Cut processing time by ~80% through PySpark/BigQuery optimizations.</li>
@@ -557,20 +585,53 @@
   document.getElementById('year').textContent = new Date().getFullYear();
 
   // Scroll spy: highlight active nav link
-  const sections = [...document.querySelectorAll('main section[id]')];
+  const header = document.querySelector('header.site-header');
   const navLinks = [...document.querySelectorAll('nav.links a')];
   const linkById = Object.fromEntries(navLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const setActiveLink = (id) => {
+    navLinks.forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+    const active = linkById[id];
+    if (active) {
+      active.classList.add('active');
+      active.setAttribute('aria-current', 'true');
+    }
+  };
+  const uniqueTargets = [...new Map(navLinks
+    .map(a => [a.getAttribute('href').slice(1), document.getElementById(a.getAttribute('href').slice(1))])
+    .filter(([, el]) => !!el)
+  ).values()];
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        const id = e.target.id;
-        navLinks.forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
-        const active = linkById[id];
-        if (active) { active.classList.add('active'); active.setAttribute('aria-current', 'true'); }
+        setActiveLink(e.target.id);
       }
     });
   }, { rootMargin: '-40% 0px -55% 0px', threshold: [0, 0.5, 1] });
-  sections.forEach(sec => obs.observe(sec));
+  uniqueTargets.forEach(sec => obs.observe(sec));
+
+  const headerOffset = () => (header?.offsetHeight || 0) + 8;
+  navLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+      const id = link.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (!target) return;
+      event.preventDefault();
+      setActiveLink(id);
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset();
+      window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+      history.pushState(null, '', `#${id}`);
+    });
+  });
+
+  const brandLink = document.querySelector('a.brand');
+  brandLink?.addEventListener('click', (event) => {
+    const target = document.getElementById('hero');
+    if (!target) return;
+    event.preventDefault();
+    const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset();
+    window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+    history.pushState(null, '', '#hero');
+  });
 
   // Copy email to clipboard
   const copyBtn = document.getElementById('copyEmail');
